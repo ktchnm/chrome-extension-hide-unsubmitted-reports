@@ -2,7 +2,7 @@
     "manifest_version": 2,      
     "name": "Hide unsubmitted reports on Manaba", 
     "description": "manaba上の'未提出課題'から任意の課題を隠す拡張機能です",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icons": {
         "48": "icon48.png",
         "128": "icon128.png"
