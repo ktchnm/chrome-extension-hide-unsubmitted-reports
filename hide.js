@@ -19,7 +19,7 @@ for (key in localStorage) {
         }
     }
 }
-changeClass($(".tbody1 > .title, .tbody1 > .row0, .tbody1 > .row1"));
+changeClass();
 
 let openExtentionFlag = false;
 $(".openExtentionButton").on("click", function() {
@@ -42,27 +42,27 @@ $(".openExtentionButton").on("click", function() {
 });
 
 $(document).on("click", ".hideButton", function (e) {
-    let deleteReportName = $(this).parent("td").parent("tr").children().eq(1).children("div").children("a").text();
-    localStorage.setItem(deleteReportName,null);
+    let reportName = $(this).parent("td").parent("tr").children().eq(1).children("div").children("a").text();
+    localStorage.setItem(reportName,null);
     $(this).addClass("showButton");
     $(this).removeClass("hideButton");
     $(this).text("戻す")
     let trList = $(".tbody2 > .title, .tbody2 > .row0, .tbody2 > .row1");
     let trItem = $(this).parent("td").parent("tr");
     insert(trList, trItem);
-    changeClass(trList);
+    changeClass();
 });
 
 $(document).on("click", ".showButton", function (e) {
-    let deleteReportName = $(this).parent("td").parent("tr").children().eq(1).children("div").children("a").text();
-    localStorage.removeItem(deleteReportName);
+    let reportName = $(this).parent("td").parent("tr").children().eq(1).children("div").children("a").text();
+    localStorage.removeItem(reportName);
     $(this).addClass("hideButton");
     $(this).removeClass("showButton");
     $(this).text("隠す")
     let trList = $(".tbody1 > .title, .tbody1 > .row0, .tbody1 > .row1");
     let trItem = $(this).parent("td").parent("tr");
     insert(trList, trItem);
-    changeClass(trList);
+    changeClass();
 });
 
 
@@ -86,10 +86,15 @@ function insert(trList, trItem){
     trItem.insertAfter("tr[no=" + i + "]");
 }
 
-function changeClass(trList){
-    trList.each(function(i){
-        if(i == 0 || i == 1) return true;
-        $(this).addClass( i % 2 ? "row0" : "row1");
-        $(this).removeClass( i % 2 ? "row1" : "row0");
+function changeClass(){
+    let trList1 = $(".tbody1 > .row0, .tbody1 > .row1");
+    let trList2 = $(".tbody1 > .row0, .tbody1 > .row1");
+    trList1.each(function(i){
+        $(this).addClass( i % 2 ? "row1" : "row0");
+        $(this).removeClass( i % 2 ? "row0" : "row1");
+    });
+    trList2.each(function(i){
+        $(this).addClass( i % 2 ? "row1" : "row0");
+        $(this).removeClass( i % 2 ? "row0" : "row1");
     });
 }
