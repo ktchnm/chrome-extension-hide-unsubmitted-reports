@@ -8,17 +8,29 @@ $(".tbody2").parent("table").before("<h1 class='hideTitle'>隠した課題一覧
 $(".tbody2, .hideTitle").hide();
 $("table").eq(0).after("<button class='openExtentionButton' style='display: block; margin:10px 0 0 auto;'>拡張機能：Hide unsubmitted reports on Manaba を開く</button>");
 
+let deleteSet = new Set(JSON.parse(localStorage.getItem("chrome-extention-hide-unsubmitted-report-on-manaba")));
+
+// 適当な時期になったら消す
 for (key in localStorage) {
     if (localStorage.hasOwnProperty(key)) {
-        let ele = $(".tbody1 > tr:contains("+key+")");
-        if(ele.length > 0){
-            let trList = $(".tbody2 > .title, .tbody2 > .row0, .tbody2 > .row1");
-            insert(trList, ele);
-        }else{
-            localStorage.removeItem(key);
-        }
+        if(key === "chrome-extention-hide-unsubmitted-report-on-manaba") continue;
+        deleteSet.add(key);
+        localStorage.removeItem(key);
     }
 }
+localStorage.setItem("chrome-extention-hide-unsubmitted-report-on-manaba",  JSON.stringify(Array.from(deleteSet)));
+// ここまで
+
+deleteSet.forEach(function(val){
+    let ele = $(".tbody1 > tr:contains("+val+")");
+    if(ele.length > 0){
+        let trList = $(".tbody2 > .title, .tbody2 > .row0, .tbody2 > .row1");
+        insert(trList, ele);
+    }else{
+        deleteSet.delete(val);
+    }
+});
+
 changeClass();
 
 let openExtentionFlag = false;
@@ -43,7 +55,8 @@ $(".openExtentionButton").on("click", function() {
 
 $(document).on("click", ".hideButton", function (e) {
     let reportName = $(this).parent("td").parent("tr").children().eq(1).children("div").children("a").text();
-    localStorage.setItem(reportName,null);
+    deleteSet.add(reportName);
+    localStorage.setItem("chrome-extention-hide-unsubmitted-report-on-manaba", JSON.stringify(Array.from(deleteSet)));
     $(this).addClass("showButton");
     $(this).removeClass("hideButton");
     $(this).text("戻す")
@@ -55,7 +68,8 @@ $(document).on("click", ".hideButton", function (e) {
 
 $(document).on("click", ".showButton", function (e) {
     let reportName = $(this).parent("td").parent("tr").children().eq(1).children("div").children("a").text();
-    localStorage.removeItem(reportName);
+    deleteSet.delete(reportName);
+    localStorage.setItem("chrome-extention-hide-unsubmitted-report-on-manaba", JSON.stringify(Array.from(deleteSet)));
     $(this).addClass("hideButton");
     $(this).removeClass("showButton");
     $(this).text("隠す")
@@ -80,7 +94,6 @@ function insert(trList, trItem){
         if(tmp > trItemNo){
             return false;
         }
-        console.log(tmp);
         i = tmp;
     });
     trItem.insertAfter("tr[no=" + i + "]");
