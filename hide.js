@@ -6,7 +6,7 @@ $("tbody").addClass("tbody1")
 $("table").after("<table class='stdlist' width='100%'><tbody class='tbody2'><tr class='title' no='0'><th class='top'>タイプ</th><th width='30%' class='top'>タイトル</th><th width='24%' class='top'>コース</th><th width='17%' class='top'>受付開始日時</th><th width='17%' class='top'>受付終了日時</th></tr></tbody></table>");
 $(".tbody2").parent("table").before("<h1 class='hideTitle'>隠した課題一覧   </h1>")
 $(".tbody2, .hideTitle").hide();
-$("table").eq(0).after("<button class='openExtentionButton' style='display: block; margin:10px 0 0 auto;'>拡張機能：Hide unsubmitted reports on Manaba を開く</button>");
+$(".pagebody table").eq(0).after("<button class='openExtentionButton' style='display: block; margin:10px 0 0 auto;'>拡張機能：Hide unsubmitted reports on Manaba を開く</button>");
 
 let deleteSet = new Set(JSON.parse(localStorage.getItem("chrome-extention-hide-unsubmitted-report-on-manaba")));
 
